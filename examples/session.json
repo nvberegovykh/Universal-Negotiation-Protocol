@@ -1,0 +1,146 @@
+{
+  "schema_version": "0.1.0",
+  "session_id": "synthetic-pump-001",
+  "synthetic": true,
+  "scope": "Fictional maintenance records and notice only; no real-world commitments.",
+  "sides": [
+    {
+      "id": "east",
+      "representative_id": "east-representative",
+      "mandate_ref": "synthetic:east-mandate"
+    },
+    {
+      "id": "west",
+      "representative_id": "west-representative",
+      "mandate_ref": "synthetic:west-mandate"
+    }
+  ],
+  "agency": {
+    "id": "synthetic-agency",
+    "approved_by": [
+      "east",
+      "west"
+    ],
+    "guidelines_ref": "synthetic:guidelines-v1",
+    "guidelines_sha256": "f3edd540f8b07367eb91b89b9907dd8db9e0afd427b35b4ddea05418f29ff2df"
+  },
+  "baseline": {
+    "ref": "synthetic:starting-record-v1",
+    "sha256": "3b1541be2a409fa63f000c3158ef4c6fea2e7bdda1f5e0e5a20033fa7a724fb7"
+  },
+  "cycle": {
+    "correction_round_limit": 1,
+    "starts_at": "2026-10-30T15:00:00Z",
+    "correction_deadline": "2026-10-30T15:35:00Z",
+    "deadline_at": "2026-10-30T16:00:00Z",
+    "stability_window_seconds": 120
+  },
+  "corrections": [
+    {
+      "side_id": "east",
+      "disposition": "revised",
+      "at": "2026-10-30T15:30:00Z",
+      "baseline_sha256": "3b1541be2a409fa63f000c3158ef4c6fea2e7bdda1f5e0e5a20033fa7a724fb7"
+    },
+    {
+      "side_id": "west",
+      "disposition": "revised",
+      "at": "2026-10-30T15:31:00Z",
+      "baseline_sha256": "3b1541be2a409fa63f000c3158ef4c6fea2e7bdda1f5e0e5a20033fa7a724fb7"
+    }
+  ],
+  "proposals": [
+    {
+      "id": "coexistence-1",
+      "terms": "East and West will each provide the other with read access to their shared pump maintenance log. Each will give the same 48-hour notice before planned servicing. Emergency incidents follow the separately accepted incident procedure. Ownership, water rights, cultural identity, and historical interpretations remain outside this package. These are fictional demonstration terms.",
+      "content_sha256": "ae6e6a5ab6e6a26c6a9c09bd312a8f2a4e6029976cf9259f39ce7433247b1087",
+      "affected_side_ids": [
+        "east",
+        "west"
+      ],
+      "review_id": "review-1",
+      "neutral_operator_applied": true
+    }
+  ],
+  "reviews": [
+    {
+      "id": "review-1",
+      "proposal_sha256": "ae6e6a5ab6e6a26c6a9c09bd312a8f2a4e6029976cf9259f39ce7433247b1087",
+      "agency_id": "synthetic-agency",
+      "guidelines_sha256": "f3edd540f8b07367eb91b89b9907dd8db9e0afd427b35b4ddea05418f29ff2df",
+      "responsible_professionals": [
+        "Fictional domain reviewer: no actual credentials claimed"
+      ],
+      "signoff_ref": "synthetic:unsigned-demonstration-only",
+      "si_tool_status": "synthetic; no actual SI or AI expert assessment performed",
+      "issued_at": "2026-10-30T15:41:00Z",
+      "valid_until": "2026-10-30T17:00:00Z",
+      "disposition": "supported",
+      "conditions_satisfied": true,
+      "condition_evidence_refs": [],
+      "sources": [
+        {
+          "id": "synthetic-maintenance-log",
+          "synthetic": true,
+          "observed_at": "2026-10-30T14:00:00Z",
+          "retrieved_at": "2026-10-30T15:00:00Z",
+          "fresh_until": "2026-10-30T17:00:00Z"
+        }
+      ],
+      "limitations": [
+        "All statements are invented for structural testing. No real source or professional signoff exists."
+      ]
+    }
+  ],
+  "doubts": [
+    {
+      "id": "history-interpretation",
+      "status": "open",
+      "material_to": [],
+      "summary": "Different accounts of the earlier dispute remain outside the narrow package."
+    }
+  ],
+  "mistakes": [
+    {
+      "id": "error-east-1",
+      "actor_id": "east",
+      "category": "arithmetic_or_units",
+      "status": "acknowledged",
+      "claim": "The earlier schedule used an incorrect time-zone conversion.",
+      "correction": "The corrected time-zone conversion is linked in the fictional starting record.",
+      "forgiveness_requested": true,
+      "forgiveness_response": "not_granted",
+      "repair_ref": "synthetic:corrected-log"
+    }
+  ],
+  "closure": {
+    "status": "closed_agreed",
+    "at": "2026-10-30T15:50:00Z",
+    "stable": true,
+    "stable_since": "2026-10-30T15:45:00Z",
+    "exclusion_triggered": false,
+    "candidate_proposal_ids": [
+      "coexistence-1"
+    ],
+    "adopted_proposal_ids": [
+      "coexistence-1"
+    ],
+    "ratifications": [
+      {
+        "side_id": "east",
+        "proposal_id": "coexistence-1",
+        "proposal_sha256": "ae6e6a5ab6e6a26c6a9c09bd312a8f2a4e6029976cf9259f39ce7433247b1087",
+        "at": "2026-10-30T15:47:00Z",
+        "evidence_ref": "synthetic:east-acceptance-not-a-real-signature"
+      },
+      {
+        "side_id": "west",
+        "proposal_id": "coexistence-1",
+        "proposal_sha256": "ae6e6a5ab6e6a26c6a9c09bd312a8f2a4e6029976cf9259f39ce7433247b1087",
+        "at": "2026-10-30T15:48:00Z",
+        "evidence_ref": "synthetic:west-acceptance-not-a-real-signature"
+      }
+    ],
+    "neutral_record": "One full round complete. Both fictional actors retain their identities and historical disagreement. Only the recorded maintenance terms are accepted in this simulation."
+  }
+}

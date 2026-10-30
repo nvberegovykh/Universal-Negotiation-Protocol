@@ -1,0 +1,603 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "synthetic": {
+      "type": "boolean"
+    },
+    "scope": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sides": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/side"
+      },
+      "minItems": 2
+    },
+    "agency": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "approved_by": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 2,
+          "uniqueItems": true
+        },
+        "guidelines_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "guidelines_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "id",
+        "approved_by",
+        "guidelines_ref",
+        "guidelines_sha256"
+      ],
+      "additionalProperties": false
+    },
+    "baseline": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "ref",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "cycle": {
+      "type": "object",
+      "properties": {
+        "correction_round_limit": {
+          "const": 1
+        },
+        "starts_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correction_deadline": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "deadline_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "stability_window_seconds": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      },
+      "required": [
+        "correction_round_limit",
+        "starts_at",
+        "correction_deadline",
+        "deadline_at",
+        "stability_window_seconds"
+      ],
+      "additionalProperties": false
+    },
+    "corrections": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/correction"
+      },
+      "minItems": 0
+    },
+    "proposals": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/proposal"
+      },
+      "minItems": 0
+    },
+    "reviews": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/review"
+      },
+      "minItems": 0
+    },
+    "doubts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/doubt"
+      },
+      "minItems": 0
+    },
+    "mistakes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/mistake"
+      },
+      "minItems": 0
+    },
+    "closure": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "closed_agreed",
+            "closed_partial",
+            "closed_unresolved",
+            "closed_unsafe"
+          ]
+        },
+        "at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "stable": {
+          "type": "boolean"
+        },
+        "stable_since": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "exclusion_triggered": {
+          "type": "boolean"
+        },
+        "candidate_proposal_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "adopted_proposal_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "ratifications": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ratification"
+          },
+          "minItems": 0
+        },
+        "neutral_record": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "status",
+        "at",
+        "stable",
+        "stable_since",
+        "exclusion_triggered",
+        "candidate_proposal_ids",
+        "adopted_proposal_ids",
+        "ratifications",
+        "neutral_record"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "session_id",
+    "synthetic",
+    "scope",
+    "sides",
+    "agency",
+    "baseline",
+    "cycle",
+    "corrections",
+    "proposals",
+    "reviews",
+    "doubts",
+    "mistakes",
+    "closure"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UNP v0.1 selected closed-session record",
+  "description": "Structure only. Cross-field invariants require scripts/validate.py. Neither layer verifies semantic truth, identity, signatures, or professional qualification. This compact example is not the full production evaluation record.",
+  "$defs": {
+    "side": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "representative_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "mandate_ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "representative_id",
+        "mandate_ref"
+      ],
+      "additionalProperties": false
+    },
+    "correction": {
+      "type": "object",
+      "properties": {
+        "side_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "disposition": {
+          "enum": [
+            "revised",
+            "retained",
+            "no_response"
+          ]
+        },
+        "at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "baseline_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "side_id",
+        "disposition",
+        "at",
+        "baseline_sha256"
+      ],
+      "additionalProperties": false
+    },
+    "proposal": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "terms": {
+          "type": "string",
+          "minLength": 1
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "affected_side_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "review_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "neutral_operator_applied": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "terms",
+        "content_sha256",
+        "affected_side_ids",
+        "review_id",
+        "neutral_operator_applied"
+      ],
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "synthetic": {
+          "type": "boolean"
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "retrieved_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "fresh_until": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "synthetic",
+        "observed_at",
+        "retrieved_at",
+        "fresh_until"
+      ],
+      "additionalProperties": false
+    },
+    "review": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "proposal_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "agency_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "guidelines_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "responsible_professionals": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "signoff_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "si_tool_status": {
+          "type": "string",
+          "minLength": 1
+        },
+        "issued_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "valid_until": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "disposition": {
+          "enum": [
+            "supported",
+            "conditional",
+            "unsupported",
+            "insufficient_data",
+            "outside_mandate"
+          ]
+        },
+        "conditions_satisfied": {
+          "type": "boolean"
+        },
+        "condition_evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/source"
+          },
+          "minItems": 0
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "id",
+        "proposal_sha256",
+        "agency_id",
+        "guidelines_sha256",
+        "responsible_professionals",
+        "signoff_ref",
+        "si_tool_status",
+        "issued_at",
+        "valid_until",
+        "disposition",
+        "conditions_satisfied",
+        "condition_evidence_refs",
+        "sources",
+        "limitations"
+      ],
+      "additionalProperties": false
+    },
+    "doubt": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "open",
+            "resolved"
+          ]
+        },
+        "material_to": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "status",
+        "material_to",
+        "summary"
+      ],
+      "additionalProperties": false
+    },
+    "mistake": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "actor_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "category": {
+          "enum": [
+            "arithmetic_or_units",
+            "formal_inference",
+            "factual",
+            "translation",
+            "model_limit",
+            "value_disagreement",
+            "contested_claim"
+          ]
+        },
+        "status": {
+          "enum": [
+            "alleged",
+            "acknowledged",
+            "confirmed_by_review",
+            "disputed"
+          ]
+        },
+        "claim": {
+          "type": "string",
+          "minLength": 1
+        },
+        "correction": {
+          "type": "string",
+          "minLength": 1
+        },
+        "forgiveness_requested": {
+          "type": "boolean"
+        },
+        "forgiveness_response": {
+          "enum": [
+            "granted",
+            "not_granted",
+            "no_response",
+            "not_requested"
+          ]
+        },
+        "repair_ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "actor_id",
+        "category",
+        "status",
+        "claim",
+        "correction",
+        "forgiveness_requested",
+        "forgiveness_response",
+        "repair_ref"
+      ],
+      "additionalProperties": false
+    },
+    "ratification": {
+      "type": "object",
+      "properties": {
+        "side_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "proposal_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "proposal_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "evidence_ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "side_id",
+        "proposal_id",
+        "proposal_sha256",
+        "at",
+        "evidence_ref"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$comment": "not_started is an admission state, outside this closed-session record schema."
+}
